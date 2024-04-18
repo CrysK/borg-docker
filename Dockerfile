@@ -88,6 +88,8 @@ RUN set -x && \
         zstd="${ZSTD_VERSION}" zstd-dev="${ZSTD_VERSION}" \
         lz4="${LZ4_VERSION}" lz4-dev="${LZ4_VERSION}" \
         linux-headers="${LINUX_HEADERS_VERSION}" \
+        fuse fuse-dev \ # add FUSE for borg mount
+        fuse3 fuse3-dev \
     && adduser -D -u 500 borg borg \
     && mkdir -p /var/run/sshd /var/backups/borg /var/lib/docker-borg/ssh \
     && mkdir /home/borg/.ssh \
@@ -111,6 +113,7 @@ RUN set -x \
 VOLUME ["/home/borg/backups/", "/var/lib/docker-borg", "/home/borg/.ssh/"]
 
 COPY ./entrypoint.sh /
+# add scipts for running create, extract, ...
 
 EXPOSE 22
 CMD ["/entrypoint.sh"]
